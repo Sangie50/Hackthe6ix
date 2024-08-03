@@ -3,7 +3,31 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
 
+import Header from '../components/Header/Header.js';
+import MainBody from '../components/MainBody/MainBody.js';
+import SidePanel from '../components/SidePanel/SidePanel.js';
+import Footer from '../components/Footer/Footer.js';
+
 export default function Home() {
+  return (
+    <>
+
+      {/* <Header /> */}
+
+      <div className="flex  flex-row-reverse">
+
+        <SidePanel />
+        <Tracks />
+        <Footer />
+
+      </div>
+    </>
+  )
+
+}
+
+export function Tracks() {
+
 
   const [clickedAt, SetClickedAt] = useState({ id: "", atY: null, atX: null });
 
@@ -148,7 +172,7 @@ export default function Home() {
 
 
   return (
-    <main className="">
+    <div className="w-full">
 
       <div>
         <p>Status: {isConnected ? "connected" : "disconnected"}</p>
@@ -210,6 +234,6 @@ export default function Home() {
       </div>
 
 
-    </main>
+    </div>
   );
 }
