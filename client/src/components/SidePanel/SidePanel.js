@@ -9,6 +9,9 @@ const SidePanel = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [currentSound, setCurrentSound] = useState(null);
     const [currentSoundId, setCurrentSoundId] = useState(null);
+    const [volume, setVolume] = useState(1.0); // Initial volume set to 100%
+    const [fadeDuration, setFadeDuration] = useState(1000); // Initial fade duration set to 1 second
+
     
     // Handle file input change event
     const handleFileUpload = (event) => {
@@ -63,6 +66,29 @@ const SidePanel = () => {
         }
     };
 
+    // Adjust volume
+    const adjustVolume = (e) => {
+        const newVolume = parseFloat(e.target.value);
+        setVolume(newVolume);
+        if (currentSound) {
+            currentSound.volume(newVolume, currentSoundId);
+        }
+    };
+
+    // Fade in audio
+    const fadeInAudio = () => {
+        if (currentSound && currentSoundId !== null) {
+            currentSound.fade(0, volume, fadeDuration, currentSoundId);
+        }
+    };
+
+    // Fade out audio
+    const fadeOutAudio = () => {
+        if (currentSound && currentSoundId !== null) {
+            currentSound.fade(volume, 0, fadeDuration, currentSoundId);
+        }
+    };
+
     return (
         <div className="side-panel">
             <div className="panel-block">
@@ -100,6 +126,24 @@ const SidePanel = () => {
             </div>
             <div className="panel-block">
                 <h3>Volume</h3>
+                <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    onChange={adjustVolume}
+                />
+                <h3>Fade Duration (ms)</h3>
+                <input
+                    type="number"
+                    min="100"
+                    step="100"
+                    value={fadeDuration}
+                    onChange={(e) => setFadeDuration(parseInt(e.target.value))}
+                />
+                <button onClick={fadeInAudio}>Fade In</button>
+                <button onClick={fadeOutAudio}>Fade Out</button>
             </div>
         </div>
     );
