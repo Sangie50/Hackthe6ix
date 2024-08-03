@@ -57,6 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
         event.dataTransfer.setData('text/plain', event.target.id);
         event.dataTransfer.effectAllowed = 'move';
         event.target.classList.add('dragging');
+
+        // Create a custom drag image
+        const ghostImage = document.createElement('div');
+        ghostImage.style.width = '100px';
+        ghostImage.style.height = '100px';
+        ghostImage.style.backgroundColor = 'rgba(240, 240, 240, 0.8)';
+        ghostImage.style.border = '1px solid #000';
+        ghostImage.style.clipPath = "path('M10,10 h80 a10,10 0 0,1 10,10 v10 a10,10 0 0,1 -10,10 h-10 a10,10 0 0,0 -10,10 v10 a10,10 0 0,0 10,10 h10 a10,10 0 0,1 10,10 v10 a10,10 0 0,1 -10,10 h-80 a10,10 0 0,1 -10,-10 v-10 a10,10 0 0,1 10,-10 h10 a10,10 0 0,0 10,-10 v-10 a10,10 0 0,0 -10,-10 h-10 a10,10 0 0,1 -10,-10 v-10 a10,10 0 0,1 10,-10 Z')";
+        document.body.appendChild(ghostImage);
+        event.dataTransfer.setDragImage(ghostImage, 50, 50);
+
+        // Remove the ghost image after the drag starts
+        setTimeout(() => document.body.removeChild(ghostImage), 0);
     }
 
     function handleDragEnd(event) {
@@ -75,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const draggedElementId = event.dataTransfer.getData('text/plain');
         const draggedElement = document.getElementById(draggedElementId);
-        
+
         // Ensure the drop is within the #audioPieces container
         const dropZone = document.getElementById('audioPieces');
         if (dropZone.contains(event.target) || event.target === dropZone) {

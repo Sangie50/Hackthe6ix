@@ -1,0 +1,32 @@
+.side-panel {
+    width: 200px; /* Set a width for the side panel */
+    background-color: #f5f5f5; /* Light grey background color */
+    padding: 10px; /* Add some padding */
+    border-right: 1px solid #ddd; /* Add a border to the right */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add a slight shadow for depth */
+    height: 100vh; /* Full height of the viewport */
+    position: fixed; /* Fix the position on the left side */
+    top: 0; /* Align with the top */
+    left: 0; /* Align with the left */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange children in a column */
+}
+
+.panel-block {
+    flex: 1; /* Allow each block to grow equally */
+    margin-bottom: 10px; /* Space between blocks */
+    padding: 10px; /* Inner padding for each block */
+    background-color: #fff; /* White background for blocks */
+    border-radius: 5px; /* Rounded corners for blocks */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Slight shadow for blocks */
+    text-align: center; /* Center text in blocks */
+    display: flex; /* Use flexbox for content alignment */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+}
+
+.panel-block h3 {
+    margin: 0; /* Remove default margin from headings */
+    font-size: 18px; /* Set a font size for the headings */
+    color: #333; /* Dark text color for contrast */
+}

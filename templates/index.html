@@ -2,14 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Music Editing App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
 <body>
     <h1>Real-Time Music Editing App</h1>
-    <input type="file" id="fileInput" multiple>
-    <div id="audioPieces"></div>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+    <!-- Audio File Upload -->
+    <section id="uploadSection">
+        <h2>Upload Audio Files</h2>
+        <input type="file" id="fileInput" accept="audio/*" multiple>
+        <div id="audioPieces"></div>
+        <ul id="messages"></ul>
+    </section>
+
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
