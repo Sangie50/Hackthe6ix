@@ -1,14 +1,9 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import './SidePanel.css';
 import { io } from 'socket.io-client';
+import {Howl, Howler} from 'howler';
 
 const socket = io('http://localhost:3000'); // Ensure this matches your server URL and port
-=======
-import React, { useState } from 'react';
-import {Howl, Howler} from 'howler';
-import './SidePanel.css'; // Import CSS for styling
->>>>>>> 172b161f2884f32210c92a53020a8779a1f0d170
 
 const SidePanel = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -92,8 +87,6 @@ const SidePanel = () => {
             </div>
             <div className="panel-block">
                 <h3>Music Library</h3>
-<<<<<<< HEAD
-=======
                 <ul className="file-list">
                     {uploadedFiles.map((file, index) => (
                         <li key={index} className="file-item">
@@ -104,7 +97,6 @@ const SidePanel = () => {
                         </li>
                     ))}
                 </ul>
->>>>>>> 172b161f2884f32210c92a53020a8779a1f0d170
             </div>
             <div className="panel-block">
                 <h3>Volume</h3>
