@@ -6,12 +6,14 @@ import SidePanel from '../components/SidePanel/SidePanel.js'; // Import the Side
 
 const HomePage = () => {
     return (
-        <div style={{ display: 'flex' }}> {/* Use flexbox to align side panel and main content */}
-            <SidePanel /> {/* Add the SidePanel component */}
-            <div style={{ marginLeft: '200px', flex: 1 }}> {/* Offset main content by panel width */}
-                <Header />
-                <MainBody />
-                <Footer />
+        <div>
+            <Header /> {/* Header across the top */}
+            <div style={{ display: 'flex', height: 'calc(100vh - 60px)' }}> {/* Adjust height dynamically based on header size */}
+                <SidePanel /> {/* Side panel */}
+                <div style={{ flex: 1, padding: '20px' }}> {/* Main content area */}
+                    <MainBody />
+                    <Footer />
+                </div>
             </div>
         </div>
     );

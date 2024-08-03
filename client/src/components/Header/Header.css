@@ -1,7 +1,13 @@
-.header{
-    background-color: grey;
-    padding: 20px;
-    color: white;
-    text-align: centre;
+.header {
+    width: 100%; /* Full width */
+    height: 60px; /* Set a fixed height for the header */
+    background-color: #888; /* Grey background color */
+    color: white; /* Text color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a slight shadow for separation */
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
-

@@ -1,15 +1,13 @@
 .side-panel {
-    width: 200px; /* Set a width for the side panel */
+    width: 200px; /* Set a fixed width for the side panel */
     background-color: #f5f5f5; /* Light grey background color */
     padding: 10px; /* Add some padding */
     border-right: 1px solid #ddd; /* Add a border to the right */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add a slight shadow for depth */
-    height: 100vh; /* Full height of the viewport */
-    position: fixed; /* Fix the position on the left side */
-    top: 0; /* Align with the top */
-    left: 0; /* Align with the left */
+    height: calc(100vh - 60px); /* Full height of the viewport minus header */
     display: flex; /* Use flexbox for layout */
     flex-direction: column; /* Arrange children in a column */
+    justify-content: space-between; /* Distribute space evenly */
 }
 
 .panel-block {
@@ -21,12 +19,57 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Slight shadow for blocks */
     text-align: center; /* Center text in blocks */
     display: flex; /* Use flexbox for content alignment */
-    align-items: center; /* Vertically center content */
-    justify-content: center; /* Horizontally center content */
+    flex-direction: column; /* Stack content vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+}
+
+.panel-block:last-child {
+    margin-bottom: 0; /* Remove the margin from the last block */
 }
 
 .panel-block h3 {
     margin: 0; /* Remove default margin from headings */
     font-size: 18px; /* Set a font size for the headings */
     color: #333; /* Dark text color for contrast */
+}
+
+button {
+    padding: 10px 15px; /* Add padding for the button */
+    font-size: 14px; /* Set font size */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners for the button */
+    background-color: #007bff; /* Primary color for the button */
+    color: #fff; /* White text for contrast */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-bottom: 10px; /* Space below the button */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for button */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.file-list {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    width: 100%; /* Full width */
+    text-align: left; /* Align text to the left */
+}
+
+.file-item {
+    padding: 5px; /* Add padding for list items */
+    border-bottom: 1px solid #eee; /* Separator line */
+    font-size: 14px; /* Set font size for list items */
+    color: #555; /* Text color */
+    cursor: move; /* Cursor change to indicate draggable */
+    transition: background-color 0.2s; /* Smooth transition for hover effect */
+}
+
+.file-item:hover {
+    background-color: #f0f0f0; /* Light grey background on hover */
+}
+
+.file-item:active {
+    background-color: #e0e0e0; /* Slightly darker on click */
 }
