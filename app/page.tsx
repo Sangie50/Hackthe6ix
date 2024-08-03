@@ -1,10 +1,47 @@
 "use client"
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { socket } from "../socket";
 
 export default function Home() {
 
   const [clickedAt, SetClickedAt] = useState({ id: "", atY: null, atX: null });
+
+  const [isConnected, setIsConnected] = useState(false);
+  const [transport, setTransport] = useState("N/A");
+
+  useEffect(() => {
+    if (socket.connected) {
+      onConnect();
+    }
+
+    function onConnect() {
+      setIsConnected(true);
+      setTransport(socket.io.engine.transport.name);
+
+      socket.io.engine.on("upgrade", (transport: any) => {
+        setTransport(transport.name);
+      });
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+      setTransport("N/A");
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    socket.on("hello", (receivedMsg) => {
+      console.log("receivedMsg: ", receivedMsg)
+      setElements(receivedMsg)
+    });
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, []);
 
   const [elements, setElements] = useState([
     { id: "a", width: 70, x: 100, track: 1, color: "bg-blue-700" },
@@ -84,9 +121,10 @@ export default function Home() {
         /// collision check
         console.log(boxes)
         if (
-          boxes.some((box: any) => {
-            return boxCollision({ x: clientX, width: el.width, track: el.track }, box)
-          })
+          false
+          // boxes.some((box: any) => {
+          //   return boxCollision({ x: clientX - el.width / 2, width: el.width, track: el.track }, box)
+          // })
         ) {
           // do nothing
         } else {
@@ -104,11 +142,18 @@ export default function Home() {
 
   const handleMouseUp = (event: React.MouseEvent<HTMLElement>) => {
     SetClickedAt({ id: "", atY: null, atX: null })
+    console.log("emitting")
+    socket.emit("hello", elements);
   };
 
 
   return (
     <main className="">
+
+      <div>
+        <p>Status: {isConnected ? "connected" : "disconnected"}</p>
+        <p>Transport: {transport}</p>
+      </div>
 
 
       <div onMouseMove={handleMouseMove}
