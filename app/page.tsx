@@ -32,7 +32,7 @@ export default function Home() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 
-    socket.on("hello", (receivedMsg) => {
+    socket.on("hello", (receivedMsg: any) => {
       // console.log("receivedMsg: ", receivedMsg)
       setElements(receivedMsg)
     });
