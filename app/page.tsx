@@ -32,9 +32,7 @@ export default function Home() {
     // console.log(clientX, clientY, pageX, pageY, target)
 
     const boxes = elements.map((el) => {
-      const start = el.x
-      const end = start + el.width
-      return { start, end, track: el.track }
+      return { x: el.x, width: el.width, track: el.track }
     })
 
     function boxCollision(boxA: { x: number, width: number, track: number }, boxB: { x: number, width: number, track: number }) {
@@ -84,6 +82,7 @@ export default function Home() {
         }
 
         /// collision check
+        console.log(boxes)
         if (
           boxes.some((box: any) => {
             return boxCollision({ x: clientX, width: el.width, track: el.track }, box)
