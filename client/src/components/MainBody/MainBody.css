@@ -1,4 +1,29 @@
 .main-body {
-    padding: 20px;
-    text-align: center;
+    width: 100%; /* Full width */
+    min-height: calc(100vh - 60px); /* Full height minus header */
+    padding: 20px; /* Padding around content */
+    background-color: #fff; /* White background */
+    border: 2px dashed #ccc; /* Dashed border to indicate drop area */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.dropped-file-list {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin-top: 20px; /* Space above the list */
+    width: 100%; /* Full width */
+    max-width: 600px; /* Max width of the list */
+}
+
+.dropped-file-item {
+    padding: 10px; /* Padding inside each item */
+    margin-bottom: 5px; /* Space between items */
+    background-color: #f8f8f8; /* Light grey background */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    text-align: center; /* Center text */
 }
