@@ -3,20 +3,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
-  // const myRef: any = useRef(null);
 
-  // useEffect(() => {
-  //   myRef.current.addEventListener('click', handleClick);
-  //   return () => {
-  //     myRef.current.removeEventListener('click', handleClick);
-  //   };
-  // }, []);
-
-  // const handleClick = (event: any) => {
-  //   console.log('Clicked!');
-  // };
-
-  const [clickedAt, SetClickedAt] = useState({ id: "", at: null });
+  const [clickedAt, SetClickedAt] = useState({ id: "", atY: null, atX: null });
 
   const [elements, setElements] = useState([
     { id: "a", width: 70, x: 100, track: 1, color: "bg-blue-700" },
@@ -34,47 +22,90 @@ export default function Home() {
     const { clientX, clientY, pageX, pageY } = event;
     // console.log(clientX, clientY, pageX, pageY)
     event.preventDefault()
-    SetClickedAt({ id: event.target.id, at: event.pageY })
+    // const y = event.pageY - event.target.offsetTop
+    console.log(event.target.offsetLeft)
+    SetClickedAt({ id: event.target.id, atY: pageY, atX: pageX })
   };
 
   const handleMouseMove = (event: any) => {
     const { clientX, clientY, pageX, pageY, target } = event;
-
-
     // console.log(clientX, clientY, pageX, pageY, target)
-    if (clickedAt.at != null) {
-      console.log(clickedAt.at, clientY, clientY - clickedAt.at, clickedAt.at - clientY)
 
+    const boxes = elements.map((el) => {
+      const start = el.x
+      const end = start + el.width
+      return { start, end, track: el.track }
+    })
+
+    function boxCollision(boxA: { x: number, width: number, track: number }, boxB: { x: number, width: number, track: number }) {
+      if (boxA.track === boxB.track && (
+        boxA.x + boxA.width >= boxB.x &&
+        boxA.x <= boxB.x + boxB.width
+      )) {
+        return true
+      }
+      return false
     }
 
-
-    const tmp = elements.map((el) => {
+    const tmpElements = elements.map((el) => {
       if (el.id == clickedAt.id) {
-        if (clickedAt.at != null && (clickedAt.at - clientY > 112)) {
-          if (el.track > 1) {
-            el.track = el.track - 1
+        if (clickedAt.atY != null) {
+          const trackDist = 100
+
+          console.log(clickedAt.atY, clientY, clientY - clickedAt.atY)
+
+          if (clickedAt.atY > trackDist * 2) { /// starts at track 3
+            if (clientY - clickedAt.atY < trackDist * -1) {
+              el.track = 1
+            } else if (clientY - clickedAt.atY < 0) {
+              el.track = 2
+            } else if (clientY - clickedAt.atY < trackDist) {
+              el.track = 3
+            }
+          } else if (clickedAt.atY > trackDist * 1) { /// starts at track 2
+            if (clientY - clickedAt.atY > trackDist) {
+              el.track = 3
+            } else if (clientY - clickedAt.atY < 0) {
+              el.track = 1
+            } else if (clientY - clickedAt.atY < trackDist) {
+              el.track = 2
+            }
+          } else if (clickedAt.atY < trackDist) { /// starts at track 1
+            if (clientY - clickedAt.atY > trackDist * 2) {
+              el.track = 3
+            } else if (clientY - clickedAt.atY > trackDist) {
+              el.track = 2
+            } else if (clientY - clickedAt.atY < trackDist) {
+              el.track = 1
+            }
           }
+
+
         }
-        if (clickedAt.at != null && (clickedAt.at - clientY < 112)) {
-          if (el.track < 3) {
-            el.track = el.track + 1
-          }
+
+        /// collision check
+        if (
+          boxes.some((box: any) => {
+            return boxCollision({ x: clientX, width: el.width, track: el.track }, box)
+          })
+        ) {
+          // do nothing
+        } else {
+          el.x = Number(clientX) - el.width / 2
         }
-        el.x = clientX
+
         return el
       } else {
         return el
       }
     });
 
-    setElements(tmp)
-
+    setElements(tmpElements)
   };
 
   const handleMouseUp = (event: React.MouseEvent<HTMLElement>) => {
-    SetClickedAt({ id: "", at: null })
+    SetClickedAt({ id: "", atY: null, atX: null })
   };
-
 
 
   return (
