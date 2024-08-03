@@ -7,8 +7,22 @@ body {
     flex-wrap: wrap;
 }
 
-.audio-piece {
+.puzzle-piece {
     border: 1px solid #000;
     margin: 5px;
     padding: 5px;
+    cursor: move;
+    display: inline-block;
+    background-color: #f0f0f0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    clip-path: path("M10,10 h80 a10,10 0 0,1 10,10 v10 a10,10 0 0,1 -10,10 h-10 a10,10 0 0,0 -10,10 v10 a10,10 0 0,0 10,10 h10 a10,10 0 0,1 10,10 v10 a10,10 0 0,1 -10,10 h-80 a10,10 0 0,1 -10,-10 v-10 a10,10 0 0,1 10,-10 h10 a10,10 0 0,0 10,-10 v-10 a10,10 0 0,0 -10,-10 h-10 a10,10 0 0,1 -10,-10 v-10 a10,10 0 0,1 10,-10");
+    text-align: center;
+    line-height: 100px; 
+    overflow: hidden;
+}
+
+.puzzle-piece.dragging {
+    opacity: 0.5;
 }
