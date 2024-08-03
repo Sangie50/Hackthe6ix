@@ -16,7 +16,8 @@ app.prepare().then(() => {
 
     io.on("connection", (socket) => {
         socket.on("hello", (receivedMsg) => {
-            console.log("recieved: ", receivedMsg)
+            // console.log("recieved: ", receivedMsg)
+            console.log("received a msg ")
             io.sockets.emit("hello", receivedMsg);
         });
 

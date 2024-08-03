@@ -4,10 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    // "dev": "next dev",
     "dev": "node ws-server.js",
     "build": "next build",
-    // "start": "next start",
     "start": "NODE_ENV=production node ws-server.js",
     "lint": "next lint"
   },

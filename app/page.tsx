@@ -33,7 +33,7 @@ export default function Home() {
     socket.on("disconnect", onDisconnect);
 
     socket.on("hello", (receivedMsg) => {
-      console.log("receivedMsg: ", receivedMsg)
+      // console.log("receivedMsg: ", receivedMsg)
       setElements(receivedMsg)
     });
 
@@ -129,6 +129,7 @@ export default function Home() {
           // do nothing
         } else {
           el.x = Number(clientX) - el.width / 2
+          socket.emit("hello", elements);
         }
 
         return el
@@ -143,7 +144,6 @@ export default function Home() {
   const handleMouseUp = (event: React.MouseEvent<HTMLElement>) => {
     SetClickedAt({ id: "", atY: null, atX: null })
     console.log("emitting")
-    socket.emit("hello", elements);
   };
 
 
