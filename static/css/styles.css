@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#audioPieces {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.audio-piece {
+    border: 1px solid #000;
+    margin: 5px;
+    padding: 5px;
+}
