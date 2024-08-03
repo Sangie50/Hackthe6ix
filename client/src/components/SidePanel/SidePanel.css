@@ -21,7 +21,7 @@
     display: flex; /* Use flexbox for content alignment */
     flex-direction: column; /* Stack content vertically */
     align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
+    justify-content: flex-start; /* Align items at the start of the block */
 }
 
 .panel-block:last-child {
@@ -55,6 +55,9 @@ button:hover {
     padding: 0; /* Remove default padding */
     width: 100%; /* Full width */
     text-align: left; /* Align text to the left */
+    max-height: 150px; /* Limit the height of the file list */
+    overflow-y: auto; /* Allow vertical scrolling */
+    margin-top: 10px; /* Add margin above the file list */
 }
 
 .file-item {
