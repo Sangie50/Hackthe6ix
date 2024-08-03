@@ -27,26 +27,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function addAudioPiece(data) {
         const audioPieces = document.getElementById('audioPieces');
 
+        // Create the puzzle piece container
         const puzzlePiece = document.createElement('div');
         puzzlePiece.className = 'puzzle-piece';
         puzzlePiece.draggable = true;
         puzzlePiece.id = `puzzle-${Date.now()}`;
 
+        // Create the audio element
         const audioElement = document.createElement('audio');
         audioElement.src = data.url;
         audioElement.controls = true;
-        audioElement.style.width = '80px'; 
+        audioElement.style.width = '80px'; // Fit within puzzle piece
         audioElement.style.height = '30px';
         audioElement.style.position = 'absolute';
-        audioElement.style.top = '35px'; 
-        audioElement.style.left = '10px'; 
+        audioElement.style.top = '35px'; // Center vertically within puzzle piece
+        audioElement.style.left = '10px'; // Center horizontally within puzzle piece
 
+        // Append the audio element to the puzzle piece
         puzzlePiece.appendChild(audioElement);
 
+        // Set drag and drop event handlers
         puzzlePiece.addEventListener('dragstart', handleDragStart);
         puzzlePiece.addEventListener('dragend', handleDragEnd);
-        puzzlePiece.addEventListener('dragover', handleDragOver);
-        puzzlePiece.addEventListener('drop', handleDrop);
 
         audioPieces.appendChild(puzzlePiece);
     }
@@ -61,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         event.target.classList.remove('dragging');
     }
 
+    document.addEventListener('dragover', handleDragOver);
+    document.addEventListener('drop', handleDrop);
+
     function handleDragOver(event) {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
@@ -70,9 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const draggedElementId = event.dataTransfer.getData('text/plain');
         const draggedElement = document.getElementById(draggedElementId);
-        const dropTarget = event.target;
-
-        if (dropTarget.className === 'puzzle-piece') {
+        
+        // Ensure the drop is within the #audioPieces container
+        const dropZone = document.getElementById('audioPieces');
+        if (dropZone.contains(event.target) || event.target === dropZone) {
+            const dropZoneRect = dropZone.getBoundingClientRect();
+            draggedElement.style.left = `${event.clientX - dropZoneRect.left - draggedElement.offsetWidth / 2}px`;
+            draggedElement.style.top = `${event.clientY - dropZoneRect.top - draggedElement.offsetHeight / 2}px`;
         }
     }
 });
