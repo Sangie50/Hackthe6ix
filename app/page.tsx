@@ -9,10 +9,42 @@ import SidePanel from '../components/SidePanel/SidePanel.js';
 import Footer from '../components/Footer/Footer.js';
 
 export default function Home() {
+  useEffect( () => {
+    const script = document.createElement("script");
+    script.src = "https://togetherjs.com/togetherjs-min.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      console.log('TogetherJS script loaded');
+      if (window.TogetherJS) {
+        window.TogetherJS.on('ready', () => {
+          console.log('TogetherJS session started');
+        });
+
+        window.TogetherJS.on('close', () => {
+          console.log('TogetherJS session ended');
+        });
+      }
+    };
+
+    return () => {
+      if (window.TogetherJS) {
+        window.TogetherJS.off('ready');
+        window.TogetherJS.off('close');
+      }
+      document.body.removeChild(script);
+    };
+  }, []);
+  
+    
+    
+
+
   return (
     <>
 
-      {/* <Header /> */}
+      {/*<Header />*/}
 
       <div className="flex  flex-row-reverse">
 
@@ -22,7 +54,7 @@ export default function Home() {
 
       </div>
     </>
-  )
+  );
 
 }
 
@@ -232,6 +264,18 @@ export function Tracks() {
         </div>
 
       </div>
+
+      <button
+          id="start-togetherjs"
+          type="button"
+          onClick={() => {
+          TogetherJS(this);
+          return false;
+          }}
+          data-end-togetherjs-html="End TogetherJS"
+      >
+          Start TogetherJS
+      </button>
 
 
     </div>
