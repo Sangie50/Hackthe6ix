@@ -3,6 +3,7 @@ import next from 'next';
 import { Server } from 'socket.io';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
@@ -10,6 +11,9 @@ const port = 5001;
 
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.prepare().then(() => {
     const httpServer = createServer(handler);
