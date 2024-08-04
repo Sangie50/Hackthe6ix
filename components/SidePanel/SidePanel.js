@@ -13,6 +13,16 @@ function randomFrom(arr) {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
 }
+const readFileAsDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            resolve(e.target.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
 
 const SidePanel = ({ parentTracks, setParentTracks }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -23,38 +33,47 @@ const SidePanel = ({ parentTracks, setParentTracks }) => {
 
     useEffect(() => {
         // Handle receiving the audio received event from the server
-        socket.on('audio_received', (data) => {
+        socket.on('audio_chan', (data) => {
             console.log(`Audio received: ${data.filename}`);  // Debug statement
+            // setUploadedFiles((prevFiles) => [...prevFiles, data.file]);
             // Optionally add the file to the list if server returns confirmation
         });
 
         // Cleanup socket connection on component unmount
         return () => {
-            socket.off('audio_received');
+            socket.off('audio_chan');
         };
     }, []);
 
     // Handle file input change event
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
         const files = Array.from(event.target.files);
         setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
 
-        setParentTracks([...parentTracks,
-        ...files.map((f) => {
+        var newElements = []
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const audioBlobUrl = await readFileAsDataURL(file);
+
             const starts = [100, 200, 300]
             const tracks = [1, 2, 3]
             const colors = ["bg-yellow-300", "bg-red-700", "bg-blue-700", "bg-green-700"]
-            return { id: f.name, name: f.name, width: 80, x: randomFrom(starts), track: randomFrom(tracks), color: randomFrom(colors) }
-        })
-        ])
+
+            newElements.push({
+                id: file.name, name: file.name, audioBlob: audioBlobUrl,
+                width: 80, x: randomFrom(starts), track: randomFrom(tracks), color: randomFrom(colors),
+            })
+        }
+
+        setParentTracks([...parentTracks, ...newElements])
 
         // Emit the file data to the server using Socket.IO
         files.forEach(file => {
             const reader = new FileReader();
             reader.onload = (e) => {
-                const audioDataUrl = e.target.result;
-                console.log(`Uploading file: ${file.name}`);  // Debug statement
-                socket.emit('audio_upload', { filename: file.name, audio_data: audioDataUrl });
+                const audioData = e.target.result;
+                console.log(`Uploading file: ${file.name}`);
+                socket.emit('audio_chan', { filename: file.name, audio_data: audioData });
             };
             reader.readAsDataURL(file);  // Convert file to a base64 URL
         });
@@ -67,6 +86,7 @@ const SidePanel = ({ parentTracks, setParentTracks }) => {
     };
 
     const playAudio = (file) => {
+
         if (currentSound) {
             currentSound.stop();
         }

@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
+import { Howl } from 'howler';
+import { v4 as uuidv4 } from 'uuid';
 
 import Header from '../components/Header/Header.js';
 import MainBody from '../components/MainBody/MainBody.js';
@@ -25,8 +27,12 @@ export default function Home() {
 
 export function Tracks() {
 
+  // const [clientID, setClientID] = useState(uuidv4())
+
+
 
   const [clickedAt, SetClickedAt] = useState({ id: "", atY: null, atX: null });
+
 
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
@@ -53,9 +59,10 @@ export function Tracks() {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
 
-    socket.on("hello", (receivedMsg: any) => {
-      // console.log("receivedMsg: ", receivedMsg)
+    socket.on("tracks_state", (receivedMsg) => {
+      console.log("receivedMsg: ", receivedMsg)
       setElements(receivedMsg)
+
     });
 
     return () => {
@@ -65,10 +72,15 @@ export function Tracks() {
   }, []);
 
   const [elements, setElements] = useState([
-    { id: "a", name: "a", width: 70, x: 100, track: 1, color: "bg-blue-700" },
-    { id: "e", name: "e", width: 90, x: 200, track: 2, color: "bg-red-700" },
-    { id: "i", name: "i", width: 80, x: 400, track: 3, color: "bg-green-700" },
+    { id: "a", name: "a", audioBlob: null, width: 70, x: 100, track: 1, color: "bg-blue-700" },
+    { id: "e", name: "e", audioBlob: null, width: 90, x: 200, track: 2, color: "bg-red-700" },
+    { id: "i", name: "i", audioBlob: null, width: 80, x: 400, track: 3, color: "bg-green-700" },
   ]);
+
+  useEffect(() => {
+    // console.log("emitting")
+    // socket.emit("tracks_state", elements);
+  }, [elements]);
 
   const handleMouseDown = (event: any) => {
     const { clientX, clientY, pageX, pageY } = event;
@@ -83,19 +95,19 @@ export function Tracks() {
     const { clientX, clientY, pageX, pageY, target } = event;
     // console.log(clientX, clientY, pageX, pageY, target)
 
-    const boxes = elements.map((el) => {
-      return { x: el.x, width: el.width, track: el.track }
-    })
+    // const boxes = elements.map((el) => {
+    //   return { x: el.x, width: el.width, track: el.track }
+    // })
 
-    function boxCollision(boxA: { x: number, width: number, track: number }, boxB: { x: number, width: number, track: number }) {
-      if (boxA.track === boxB.track && (
-        boxA.x + boxA.width >= boxB.x &&
-        boxA.x <= boxB.x + boxB.width
-      )) {
-        return true
-      }
-      return false
-    }
+    // function boxCollision(boxA: { x: number, width: number, track: number }, boxB: { x: number, width: number, track: number }) {
+    //   if (boxA.track === boxB.track && (
+    //     boxA.x + boxA.width >= boxB.x &&
+    //     boxA.x <= boxB.x + boxB.width
+    //   )) {
+    //     return true
+    //   }
+    //   return false
+    // }
 
     const tmpElements = elements.map((el) => {
       if (el.id == clickedAt.id) {
@@ -134,7 +146,7 @@ export function Tracks() {
         }
 
         /// collision check
-        console.log(boxes)
+        // console.log(boxes)
         if (
           false
           // boxes.some((box: any) => {
@@ -144,7 +156,7 @@ export function Tracks() {
           // do nothing
         } else {
           el.x = Number(clientX) - el.width / 2
-          socket.emit("hello", elements);
+          socket.emit("tracks_state", elements);
         }
 
         return el
@@ -158,9 +170,24 @@ export function Tracks() {
 
   const handleMouseUp = (event: React.MouseEvent<HTMLElement>) => {
     SetClickedAt({ id: "", atY: null, atX: null })
-    console.log("emitting")
   };
 
+
+  const PlayButtonPressed = () => {
+    elements.forEach(element => {
+      setTimeout(() => {
+        if (element.audioBlob) {
+          const sound = new Howl({
+            src: [element.audioBlob]
+          });
+          sound.play();
+        }
+
+
+      }, element.x * 10);
+
+    });
+  };
 
   return (
     <div className="flex  flex-row-reverse">
@@ -230,6 +257,10 @@ export function Tracks() {
           <p>Status: {isConnected ? "connected" : "disconnected"}</p>
           <p>Transport: {transport}</p>
         </div>
+
+        <button onClick={PlayButtonPressed}>
+          Play Track
+        </button>
 
       </div>
 

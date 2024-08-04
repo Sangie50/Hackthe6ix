@@ -29,28 +29,32 @@ app.prepare().then(() => {
     io.on('connection', (socket) => {
         console.log('Client connected');
 
-        socket.on("hello", (receivedMsg) => {
+        socket.on("tracks_state", (receivedMsg) => {
             // console.log("recieved: ", receivedMsg)
             console.log("received a msg ")
-            io.sockets.emit("hello", receivedMsg);
+            io.sockets.emit("tracks_state", receivedMsg);
         });
 
         // Handle audio upload event
-        socket.on('audio_upload', (data) => {
+        socket.on('audio_chan', (data) => {
             const { filename, audio_data } = data;
-            const filePath = path.join(UPLOAD_DIR, filename);
+            // const filePath = path.join(UPLOAD_DIR, filename);
 
-            // Decode the base64 string and write to file
-            const audioBuffer = Buffer.from(audio_data.split(',')[1], 'base64');
-            fs.writeFile(filePath, audioBuffer, (err) => {
-                if (err) {
-                    console.error('Error saving audio file:', err);
-                    return;
-                }
-                console.log(`Audio file ${filename} saved successfully`);
-                // Emit a confirmation event back to the client
-                socket.emit('audio_received', { filename });
-            });
+            // // Decode the base64 string and write to file
+            // const audioBuffer = Buffer.from(audio_data.split(',')[1], 'base64');
+            // fs.writeFile(filePath, audioBuffer, (err) => {
+            //     if (err) {
+            //         console.error('Error saving audio file:', err);
+            //         return;
+            //     }
+            //     console.log(`Audio file ${filename} saved successfully`);
+            //     // Emit a confirmation event back to the client
+            //     io.sockets.emit('audio_chan', data);
+            // });
+
+            console.log("received an audio file", data.filename)
+
+            io.sockets.emit('audio_chan', data);
         });
 
         socket.on('disconnect', () => {
