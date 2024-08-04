@@ -72,7 +72,7 @@ export function Tracks() {
   }, []);
 
   const [elements, setElements] = useState([
-    { id: "a", name: "Upload your Audio", audioBlob: null, width: 70, x: 30, track: 1, color: "bg-yellow-300" },
+    { id: "a", name: "Upload your Audio", audioBlob: null, width: 70, x: 30, track: 1, color: "bg-emerald-200" },
   ]);
 
   useEffect(() => {
@@ -193,7 +193,7 @@ export function Tracks() {
       <SidePanel parentTracks={elements} setParentTracks={setElements} />
       <Footer />
 
-      <div className="w-full">
+      <div className="w-full bg-pink-100">
 
 
 

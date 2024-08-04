@@ -57,7 +57,7 @@ const SidePanel = ({ parentTracks, setParentTracks }) => {
 
             const starts = [100, 200, 300]
             const tracks = [1, 2, 3]
-            const colors = ["bg-yellow-300", "bg-red-700", "bg-blue-700", "bg-green-700"]
+            const colors = ["bg-emerald-200", "bg-violet-200", "bg-pink-600", "bg-sky-300", "bg-red-400"]
 
             newElements.push({
                 id: file.name, name: file.name, audioBlob: audioBlobUrl,
@@ -166,7 +166,7 @@ const SidePanel = ({ parentTracks, setParentTracks }) => {
                     style={{ display: 'none' }} // Hidden file input
                     id="fileInput"
                 />
-                <button onClick={() => document.getElementById('fileInput').click()}>
+                <button onClick={() => document.getElementById('fileInput').click()} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">
                     Upload Audio File
                 </button>
                 <ul className="file-list">
@@ -188,9 +188,9 @@ const SidePanel = ({ parentTracks, setParentTracks }) => {
                     {uploadedFiles.map((file, index) => (
                         <li key={index} className="file-item">
                             {file.name}
-                            <button onClick={() => playAudio(file)}>Play</button>
-                            <button onClick={pauseAudio}>Pause</button>
-                            <button onClick={stopAudio}>Stop</button>
+                            <button onClick={() => playAudio(file)} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">Play</button>
+                            <button onClick={pauseAudio} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">Pause</button>
+                            <button onClick={stopAudio} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">Stop</button>
                         </li>
                     ))}
                 </ul>
@@ -217,8 +217,8 @@ const SidePanel = ({ parentTracks, setParentTracks }) => {
                         value={fadeDuration}
                         onChange={adjustFadeDuration}
                     />
-                    <button onClick={fadeInAudio}>Fade In</button>
-                    <button onClick={fadeOutAudio}>Fade Out</button>
+                    <button onClick={fadeInAudio} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">Fade In</button>
+                    <button onClick={fadeOutAudio} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">Fade Out</button>
                 </div>
             </div>
         </div>
