@@ -72,7 +72,7 @@ export function Tracks() {
   }, []);
 
   const [elements, setElements] = useState([
-    { id: "a", name: "Upload your Audio", audioBlob: null, width: 70, x: 30, track: 1, color: "bg-emerald-200" },
+    { id: "a", name: "Blank Clip", audioBlob: null, width: 70, x: 30, track: 1, color: "bg-emerald-200" },
   ]);
 
   useEffect(() => {
@@ -256,7 +256,7 @@ export function Tracks() {
           <p>Transport: {transport}</p>
         </div>
 
-        <button onClick={PlayButtonPressed} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600">
+        <button onClick={PlayButtonPressed} className="bg-violet-600 hover:shadow-lg hover:shadow-red-600 transition-all">
           Play Track
         </button>
 
