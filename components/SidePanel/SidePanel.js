@@ -5,9 +5,16 @@ import './SidePanel.css';
 import { io } from 'socket.io-client';
 
 // Initialize the socket connection to the server
-const socket = io('http://localhost:5001');  // Ensure this matches your server's address
+const socket = io('http://localhost:5001');
 
-const SidePanel = () => {
+// Ensure this matches your server's address
+
+function randomFrom(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+}
+
+const SidePanel = ({ parentTracks, setParentTracks }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [currentSound, setCurrentSound] = useState(null);
     const [currentSoundId, setCurrentSoundId] = useState(null);
@@ -31,6 +38,15 @@ const SidePanel = () => {
     const handleFileUpload = (event) => {
         const files = Array.from(event.target.files);
         setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
+
+        setParentTracks([...parentTracks,
+        ...files.map((f) => {
+            const starts = [100, 200, 300]
+            const tracks = [1, 2, 3]
+            const colors = ["bg-yellow-300", "bg-red-700", "bg-blue-700", "bg-green-700"]
+            return { id: f.name, name: f.name, width: 80, x: randomFrom(starts), track: randomFrom(tracks), color: randomFrom(colors) }
+        })
+        ])
 
         // Emit the file data to the server using Socket.IO
         files.forEach(file => {
@@ -98,8 +114,8 @@ const SidePanel = () => {
     };
 
 
-     // Adjust fade duration
-     const adjustFadeDuration = (e) => {
+    // Adjust fade duration
+    const adjustFadeDuration = (e) => {
         const newFadeDuration = parseInt(e.target.value);
         setFadeDuration(newFadeDuration);
     };

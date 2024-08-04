@@ -29,6 +29,12 @@ app.prepare().then(() => {
     io.on('connection', (socket) => {
         console.log('Client connected');
 
+        socket.on("hello", (receivedMsg) => {
+            // console.log("recieved: ", receivedMsg)
+            console.log("received a msg ")
+            io.sockets.emit("hello", receivedMsg);
+        });
+
         // Handle audio upload event
         socket.on('audio_upload', (data) => {
             const { filename, audio_data } = data;
