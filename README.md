@@ -1,6 +1,6 @@
 # MusicDox - Create music together in realtime
 
-**Music Dox** is a live, synced music editing platform designed to bring musicians together, no matter where they are. With Music Dox, you can collaborate in real-time, share your creative process, and perform live with friends or bandmates across the globe.
+**MusicDox** is a live, synced music editing platform designed to bring musicians together, no matter where they are. With Music Dox, you can collaborate in real-time, share your creative process, and perform live with friends or bandmates across the globe.
 
 ## Key Features
 
