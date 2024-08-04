@@ -200,7 +200,7 @@ export function Tracks() {
         <div onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}>
 
-          <div className="track1 w-full bg-white h-28 relative">
+          <div className="track1 w-full bg-white h-[100px] relative">
             {elements
               .filter((el) => el.track == 1)
               .map((el) => {
@@ -216,7 +216,7 @@ export function Tracks() {
               })}
           </div>
           <hr />
-          <div className="track1 w-full bg-white h-28 relative">
+          <div className="track1 w-full bg-white h-[100px] relative">
             {elements
               .filter((el) => el.track == 2)
               .map((el) => {
