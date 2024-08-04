@@ -24,6 +24,10 @@
     justify-content: center; /* Center items vertically */
 }
 
+.control-group {
+    margin-bottom: 20px;
+}
+
 .panel-block:last-child {
     margin-bottom: 0; /* Remove the margin from the last block */
 }

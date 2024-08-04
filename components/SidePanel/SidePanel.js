@@ -7,6 +7,8 @@ const SidePanel = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [currentSound, setCurrentSound] = useState(null);
     const [currentSoundId, setCurrentSoundId] = useState(null);
+    const [volume, setVolume] = useState(1.0); // Initial volume set to 100%
+    const [fadeDuration, setFadeDuration] = useState(1000); // Initial fade duration set to 1 second
 
     // Handle file input change event
     const handleFileUpload = (event) => {
@@ -21,12 +23,23 @@ const SidePanel = () => {
     };
 
     const playAudio = (file) => {
+        if (currentSound) {
+            currentSound.stop();
+        }
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const sound = new Howl({
-                src: [e.target.result]
+                src: [e.target.result],
+                volume: volume,
+                onend: () => {
+                    setCurrentSound(null);
+                    setCurrentSoundId(null);
+                }
             });
-            sound.play();
+            const soundId = sound.play();
+            setCurrentSound(sound);
+            setCurrentSoundId(soundId);
         };
         reader.readAsDataURL(file);
     };
@@ -44,6 +57,37 @@ const SidePanel = () => {
             currentSound.stop();
             setCurrentSound(null);
             setCurrentSoundId(null);
+        }
+    };
+
+    // Adjust volume
+    const adjustVolume = (e) => {
+        const newVolume = parseFloat(e.target.value);
+        setVolume(newVolume);
+        if (currentSound) {
+            currentSound.volume(newVolume, currentSoundId);
+        }
+    };
+
+
+     // Adjust fade duration
+     const adjustFadeDuration = (e) => {
+        const newFadeDuration = parseInt(e.target.value);
+        setFadeDuration(newFadeDuration);
+    };
+
+
+    // Fade in audio
+    const fadeInAudio = () => {
+        if (currentSound && currentSoundId !== null) {
+            currentSound.fade(0, volume, fadeDuration, currentSoundId);
+        }
+    };
+
+    // Fade out audio
+    const fadeOutAudio = () => {
+        if (currentSound && currentSoundId !== null) {
+            currentSound.fade(volume, 0, fadeDuration, currentSoundId);
         }
     };
 
@@ -88,8 +132,30 @@ const SidePanel = () => {
                 </ul>
             </div>
             <div className="panel-block">
-                <h3>Volume</h3>
-                {/* Additional content for this block can go here */}
+                <div className='control-group'>
+                    <h3>Volume</h3>
+                    <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={volume}
+                        onChange={adjustVolume}
+                    />
+                </div>
+                <div className="control-group">
+                    <h3>Fade Duration (ms)</h3>
+                    <input
+                        type="range"
+                        min="100"
+                        max="5000"
+                        step="100"
+                        value={fadeDuration}
+                        onChange={adjustFadeDuration}
+                    />
+                    <button onClick={fadeInAudio}>Fade In</button>
+                    <button onClick={fadeOutAudio}>Fade Out</button>
+                </div>
             </div>
         </div>
     );
